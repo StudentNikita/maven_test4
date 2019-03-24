@@ -25,15 +25,20 @@ public class BaseTest {
     public  static WebDriver driver;
 
     @BeforeClass
-    public static void setUp()  {
-
+    public static void setUp() throws Exception {
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Тест по селениум!");
 
+        int res = 1;
+
+        switch (res){
+            case 1: System.setProperty("webdriver.chrome.driver", "drv/chromedriver.exe"); driver = new ChromeDriver(); break;
+            case 2: System.setProperty("webdriver.gecko.driver", "drv/geckodriver.exe"); driver = new FirefoxDriver(); break;
+        }
 
 
 
-        System.setProperty("webdriver.chrome.driver", "drv/chromedriver.exe");
-        driver = new ChromeDriver();
+
         //System.setProperty("webdriver.gecko.driver", "drv/geckodriver.exe");
         //driver = new FirefoxDriver();
 
