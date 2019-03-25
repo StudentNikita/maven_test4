@@ -1,3 +1,4 @@
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +19,7 @@ public class RgsTest extends BaseTest {
     @Parameterized.Parameters
         public static Collection<Object[]> data() {
             return Arrays.asList(new Object[][] {
-                    { "Misha", "Pysha","09111990", false }, { "IVAN", "PETROV","01011998", true} ,{ "PERCHIK", "LERCHIK","06081994", true}
+                    { "Misha", "Pysha","09111990", true }, { "IVAN", "PETROV","01011998", false} ,{ "PERCHIK", "LERCHIK","06081994", true}
             });
         }
 
@@ -34,7 +35,7 @@ public class RgsTest extends BaseTest {
         @Parameterized.Parameter(3) //планирует или нет активный отдых
         public  boolean rest;
 
-        public static boolean box = false; // false - чекбокс выключен, true - чекбокс включен
+        
 
     @Test
     public void rgs(){
@@ -58,13 +59,19 @@ public class RgsTest extends BaseTest {
         do fillForm(By.xpath("//input[@data-test-name='BirthDate']"), bDay);
         while (getTextByXpath("//input[@data-test-name='BirthDate']").equals(bDay));
 
-        if (rest == true && box == false){ // изначально чекбокс выключен, в зависимости от того, какое значение у 'rest', такое же значение будт принимать box в конце цикла.
-            clicByXpath("//*[@id='calc-vzr-steps']/myrgs-steps-partner-auth/div[1]/div/div/div[1]/div[2]/div/div[1]/div/form/div[2]/div[10]/div[1]/div[1]/div[1]/div");
+
+        if (!driver.findElements(By.xpath("//*[contains(text(), 'активный отдых или спорт')]/ancestor::div[@class=\"calc-vzr-toggle-risk-group\"]//div[@class=\"toggle off toggle-rgs\"]")).isEmpty()) {
+            clicByXpath("//*[contains(text(), 'активный отдых или спорт')]/ancestor::div[@class=\"calc-vzr-toggle-risk-group\"]//div[@class=\"toggle off toggle-rgs\"]");
+            clicByXpath("//div[contains(@class,'toggle toggle-rgs')]");
         }
-        if (rest == false && box == true){
-            clicByXpath("//*[@id='calc-vzr-steps']/myrgs-steps-partner-auth/div[1]/div/div/div[1]/div[2]/div/div[1]/div/form/div[2]/div[10]/div[1]/div[1]/div[1]/div");
+
+        if (!driver.findElements(By.xpath("//div[contains(@class,'toggle toggle-rgs off')]")).isEmpty() && rest == true)
+        {
+            clicByXpath("//div[contains(@class,'toggle toggle-rgs')]");
+        } else if (driver.findElements(By.xpath("//div[contains(@class,'toggle toggle-rgs off')]")).isEmpty() && rest == false)
+        {
+            clicByXpath("//div[contains(@class,'toggle toggle-rgs')]");
         }
-        box = rest;
 
 
 
@@ -89,9 +96,8 @@ public class RgsTest extends BaseTest {
 
 
 
-        //if (rest == true) clicByXpath("//div[contains(@class, 'toggle toggle-rgs')]/div[contains(@class, 'toggle-group')]/label[contains(text(), 'нет') and contains(@class, 'toggle')]");
-       //if (rest == false) clicByXpath("//div[contains(@class, 'toggle toggle-rgs')]/div[contains(@class, 'toggle-group')]/label[contains(text(), 'да') and contains(@class, 'toggle')]");
-        //div[contains(@class, 'toggle toggle-rgs')]/div[contains(@class, 'toggle-group')]/label[contains(text(), 'нет') and contains(@class, 'toggle')]
+
+
 
 
 

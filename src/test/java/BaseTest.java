@@ -65,7 +65,7 @@ public class BaseTest {
 
         scrollToObjectByXPath("//button/*[contains(@class, 'content-title')]");
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//button/*[contains(@class, 'content-title')]")))); // ждем, когда появится нужный нам объект
-        //scrollToObjectByXPath("//button/*[contains(@class, 'content-title')]"); // вейт и скрол менял местами (был крол потом вейт)
+
 
         clicByXpath("//button/*[contains(@class, 'content-title')]");
 
@@ -89,7 +89,8 @@ public class BaseTest {
             clicByXpath("//input[@data-test-name='IsProcessingPersonalDataToCalculate']");
 
         }
-
+        scrollToObjectByXPath("//div[contains(@class, 'valid')]/button[contains(text(), 'Рассчитать')]");
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//div[contains(@class, 'valid')]/button[contains(text(), 'Рассчитать')]"))));
         clicByXpath("//div[contains(@class, 'valid')]/button[contains(text(), 'Рассчитать')]");
 
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//div[contains (text(),'Комфорт')]"))));
