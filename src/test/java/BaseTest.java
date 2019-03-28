@@ -6,43 +6,46 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.GeckoDriverInfo;
+
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import util.TestProperties;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
-    public  static WebDriver driver;
+    public static WebDriver driver;
+    public static Properties properties = TestProperties.getInstance().getProperties();
+    protected static String baseUrl;
 
     @BeforeClass
-    public static void setUp() throws Exception {
-    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Тест по селениум!");
-
-        int res = 1;
-
-        switch (res){
-            case 1: System.setProperty("webdriver.chrome.driver", "drv/chromedriver.exe"); driver = new ChromeDriver(); break;
-            case 2: System.setProperty("webdriver.gecko.driver", "drv/geckodriver.exe"); driver = new FirefoxDriver(); break;
+    public static void setup() {
+        switch (properties.getProperty("browser2")) {
+            case "firefox":
+                System.setProperty("webdriver.gecko.driver", properties.getProperty("webdriver.gecko.driver"));
+                driver = new FirefoxDriver();
+                break;
+            case "chrome":
+                System.setProperty("webdriver.chrome.driver", properties.getProperty("webdriver.chrome.driver"));
+                driver = new ChromeDriver();
+                break;
+            case "explorer":
+                System.setProperty("webdriver.ie.driver", properties.getProperty("webdriver.ie.driver"));
+                driver = new InternetExplorerDriver();
+                break;
         }
-
-        //System.setProperty("webdriver.gecko.driver", "drv/geckodriver.exe");
-        //driver = new FirefoxDriver();
-
-        String url = "https://www.rgs.ru/";
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        baseUrl = properties.getProperty("app.url");
+        driver.get(baseUrl);
         driver.manage().window().maximize();
-        driver.get(url);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+
         clicByXpath("//ol/li/a[contains(text(), 'Страхование')]");
         clicByXpath("//*[contains(text(), 'Выезжающим за рубеж')]");
         clicByXpath("//a[contains(text(), 'Рассчитать')]");
@@ -119,9 +122,9 @@ public class BaseTest {
     }
 
     public static void checkboxOnOffByXPath (String xPath, boolean button){
-        if (button = true || !driver.findElement(By.xpath(xPath)).isSelected()){
+        if (button == true && !driver.findElement(By.xpath(xPath)).isSelected()){
             clicByXpath(xPath);
-        } else if (button = false || driver.findElement(By.xpath(xPath)).isSelected()){
+        } else if (button == false && driver.findElement(By.xpath(xPath)).isSelected()){
             clicByXpath(xPath);
         }
     }
