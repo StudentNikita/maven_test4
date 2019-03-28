@@ -40,6 +40,9 @@ public class BaseTest {
                 System.setProperty("webdriver.ie.driver", properties.getProperty("webdriver.ie.driver"));
                 driver = new InternetExplorerDriver();
                 break;
+            default:
+                System.setProperty("webdriver.chrome.driver", properties.getProperty("webdriver.chrome.driver"));
+                driver = new ChromeDriver();
         }
         baseUrl = properties.getProperty("app.url");
         driver.get(baseUrl);
@@ -122,9 +125,11 @@ public class BaseTest {
     }
 
     public static void checkboxOnOffByXPath (String xPath, boolean button){
-        if (button == true && !driver.findElement(By.xpath(xPath)).isSelected()){
+        clicByXpath("//div[contains(@data-bind,'activeRestOrSportsToggle')]/div[contains(@class,  'toggle-rgs')]");
+
+        if (button == true && driver.findElement(By.xpath(xPath)).isEnabled()){
             clicByXpath(xPath);
-        } else if (button == false && driver.findElement(By.xpath(xPath)).isSelected()){
+        } else if (button == false && !driver.findElement(By.xpath(xPath)).isEnabled()){
             clicByXpath(xPath);
         }
     }

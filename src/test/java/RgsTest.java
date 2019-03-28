@@ -19,7 +19,7 @@ public class RgsTest extends BaseTest {
     @Parameterized.Parameters
         public static Collection<Object[]> data() {
             return Arrays.asList(new Object[][] {
-                    { "Misha", "Pysha","09111990", false }, { "IVAN", "PETROV","01011998", true} ,{ "PERCHIK", "LERCHIK","06081994", true}
+                    { "Misha", "Pysha","09111990", true }, { "IVAN", "PETROV","01011998", true} ,{ "PERCHIK", "LERCHIK","06081994", false}
             });
         }
 
@@ -45,6 +45,7 @@ public class RgsTest extends BaseTest {
         clicByXpath("//*[contains(text(), '90 дней')]");
         fillForm(By.xpath("//*[contains(@class, 'form-control')][contains(@data-bind, 'attr: _params.fullName.attr,')]"), firstName + " " + lastName);
         fillForm(By.xpath("//input[@data-test-name='BirthDate']"), bDay);
-        checkboxOnOffByXPath("//div[contains(@data-bind,'activeRestOrSportsToggle')]/div[contains(@class,  'toggle-rgs')]", rest);
+
+        checkboxOnOffByXPath("//div[@class='toggle toggle-rgs off']", rest);
     }
     }
